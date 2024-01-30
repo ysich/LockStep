@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{c74a60fb-ff8b-d30b-abdf-52118f5fdb27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryPack", "MemoryPack.csproj", "{d88bd05a-168a-db22-8c4f-045ee829e319}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{c74a60fb-ff8b-d30b-abdf-52118f5fdb27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{c74a60fb-ff8b-d30b-abdf-52118f5fdb27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{d88bd05a-168a-db22-8c4f-045ee829e319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{d88bd05a-168a-db22-8c4f-045ee829e319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,16 +1,13 @@
 ﻿/*---------------------------------------------------------------------------------------
 -- 负责人: onemt
--- 创建时间: 2024-01-17 11:23:35
+-- 创建时间: 2024-01-29 11:04:40
 -- 概述:
 ---------------------------------------------------------------------------------------*/
 
-namespace LockStep
+namespace Demo
 {
-    public interface ILSLogicSystem
+    public class Demo_TwoRoom
     {
-        // public void Awake();
-
-        public void Run(int commandId);
-        // public void Dispose();
+        
     }
 }

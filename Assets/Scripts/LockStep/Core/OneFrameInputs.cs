@@ -16,22 +16,22 @@ namespace LockStep
     public partial class OneFrameInputs:IDisposable
     {
         [MemoryPackOrder(0)]
-        public List<LSCommand> commandQueue = new List<LSCommand>(2);
+        public List<LockStepInput> inputQueue = new List<LockStepInput>(2);
 
-        public void AddFrameInput(LSCommand command)
+        public void AddFrameInput(LockStepInput command)
         {
-            commandQueue.Add(command);
+            inputQueue.Add(command);
         }
         
         public void Reset()
         {
-            commandQueue.Clear();
+            inputQueue.Clear();
         }
 
         public void CopyTo(OneFrameInputs oneFrameInputs)
         {
             oneFrameInputs.Reset();
-            foreach (var lsCommand in commandQueue)
+            foreach (var lsCommand in inputQueue)
             {
                 oneFrameInputs.AddFrameInput(lsCommand);    
             }

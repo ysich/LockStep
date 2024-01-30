@@ -7,6 +7,7 @@
 using Core;
 using LockStep.Define;
 using MemoryPack;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LockStep
@@ -17,16 +18,25 @@ namespace LockStep
         
         public readonly FixedFrameTimeCounter fixedFrameTimeCounter = new FixedFrameTimeCounter();
 
-        private readonly FrameBuffer m_FrameBuffer = new FrameBuffer();
+        public readonly FrameBuffer kFrameBuffer = new FrameBuffer();
+
+        private LockStepLogicUpdateSystem m_LogicUpdateSystem ;
+        private LockStepReplayUpdateSystem m_ReplayUpdateSystem;
 
         /// <summary>
         /// 开始时间
         /// </summary>
         public long startTime;
+
         /// <summary>
-        /// 当前帧数
+        /// 权威帧
         /// </summary>
-        public int frame;
+        public int authorityFrame;
+
+        /// <summary>
+        /// 预测帧
+        /// </summary>
+        public int predictionFrame;
         
         /// <summary>
         /// 是否在回放逻辑
@@ -39,18 +49,24 @@ namespace LockStep
         
         public readonly LockStepReplay kLockStepReplay = new LockStepReplay();
 
+        public LockStepSystem()
+        {
+            m_LogicUpdateSystem = new LockStepLogicUpdateSystem(this);
+            m_ReplayUpdateSystem = new LockStepReplayUpdateSystem(this);
+        }
+        
         public void StartTick(long startTime,int frame)
         {
             this.startTime = startTime;
-            this.frame = frame;
+            this.authorityFrame = frame;
+            this.predictionFrame = frame;
             fixedFrameTimeCounter.Init(startTime, frame,LockStepConstValue.k_UpdateInterval);
-            m_FrameBuffer.Init(frame);
-            // m_OneFrameInputs = OneFrameInputs.Create();
+            kFrameBuffer.Init(frame);
             
             LockStepModuleSingletom.instance.RegisterUpdate(this);
             Debug.Log($"开始帧同步！！！！startTime:{startTime},frame:{frame}");
         }
-
+        
         public void StopTick()
         {
             LockStepModuleSingletom.instance.UnRegisterUpdate(this);
@@ -60,57 +76,39 @@ namespace LockStep
             }
         }
 
-        private long lastFrameTime = 0;
         public void Update()
         {
-            while(true)
+            if (IsReplay)
             {
-                //没到下一帧时间则不执行
-                if (TimeInfo.instance.ClientNow() < fixedFrameTimeCounter.FrameTime(frame + 1))
-                {
-                    break;
-                }
-
-                ++frame;
-
-                OneFrameInputs frameInputs = m_FrameBuffer.GetFrameInputs(frame);
-                //如果是播放录制文件那么从这里取
-                if (IsReplay)
-                {
-                    //超过重播的帧数直接退出
-                    if (frame >= kLockStepReplay.FrameInputs.Count)
-                    {
-                        StopTick();
-                        break;
-                    }
-                    OneFrameInputs replayFrameInputs = kLockStepReplay.FrameInputs[frame];
-                    replayFrameInputs.CopyTo(frameInputs);
-                }
-                //下一帧再加，直接加会吧顺序打乱掉
-                k_lockStepUpdater.Add(frameInputs);
-
-                long frameTime = TimeInfo.instance.ClientNow();
-                Debug.Log($"LockStepUpdate_Frame:{frame},期间时间间隔为{frameTime-lastFrameTime}");
-                lastFrameTime = frameTime;
-                    
-                k_lockStepUpdater.LSUpdate(frame);
-                //TODO:现在Replay需要表现先写这里！
-                Tick(frame);
-                //屏幕录制
-                if (!IsReplay)
-                {
-                    Record();
-                }
-                //下一帧清空一下
-                OneFrameInputs nextOneFrameInputs = m_FrameBuffer.GetFrameInputs(frame + 1);
-                nextOneFrameInputs.Reset();
+                m_ReplayUpdateSystem.Update();
+            }
+            else
+            {
+                m_LogicUpdateSystem.Update();
+            }
+        }
+        /// <summary>
+        /// 帧逻辑执行到的地方
+        /// </summary>
+        /// <param name="oneFrameInputs"></param>
+        public void LSUpdate(OneFrameInputs oneFrameInputs)
+        {
+            k_lockStepUpdater.Add(oneFrameInputs);
+            //TDOO:先用权威帧代替
+            k_lockStepUpdater.LSUpdate(authorityFrame);
+            if (!IsReplay)
+            {
+                Record(authorityFrame);
             }
         }
 
-        public void Record()
+        /// <summary>
+        /// 收集每帧的数据用于回滚或者重播逻辑
+        /// </summary>
+        public void Record(int frame)
         {
             OneFrameInputs recordFrameInputs = OneFrameInputs.Create();
-            OneFrameInputs frameInputs = m_FrameBuffer.GetFrameInputs(frame);
+            OneFrameInputs frameInputs = kFrameBuffer.GetFrameInputs(frame);
             frameInputs.CopyTo(recordFrameInputs);
             kLockStepReplay.FrameInputs.Add(recordFrameInputs);
             //到了阈值保存内存快照
@@ -132,13 +130,14 @@ namespace LockStep
         {
             Debug.Log($"跳到指定帧:{frame}");
         }
-
-        public void AddFrameInput(LSCommand lsCommand)
-        {
-            //下一帧加
-            int nextFrame = this.frame + 1;
-            OneFrameInputs oneFrameInputs = m_FrameBuffer.GetFrameInputs(nextFrame);
-            oneFrameInputs.AddFrameInput(lsCommand);
-        }
+        
+        // public void AddFrameInput(LockStepInput lockStepInput)
+        // {
+        //     //TDOO:先用权威帧代替
+        //     //下一帧加
+        //     int nextFrame = this.authorityFrame + 1;
+        //     OneFrameInputs oneFrameInputs = kFrameBuffer.GetFrameInputs(nextFrame);
+        //     oneFrameInputs.AddFrameInput(lockStepInput);
+        // }
     }
 }

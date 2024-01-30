@@ -16,13 +16,16 @@ namespace LockStep
     public class LockStepModuleSingletom:Singleton<LockStepModuleSingletom>,ISingletonAwake,ISingletonUpdate
     {
         private Dictionary<int, LockStepSystem> m_SystemManager = new Dictionary<int, LockStepSystem>();
-        // private Queue<LockStepSystem> m_LockStepSystems = new Queue<LockStepSystem>();
+        private LockStepInputOperationManager m_InputOperationMgr ;
 
         private HashSet<LockStepSystem> m_UpdateSystems = new HashSet<LockStepSystem>();
         private HashSet<LockStepSystem> m_NewUpdateSystems = new HashSet<LockStepSystem>();
         public void Awake()
         {
-            AddCommandModule<Demo_OneModuleSystem>(LSCommandModuleDef.Demo_One);
+            m_InputOperationMgr = new LockStepInputOperationManager();
+            m_InputOperationMgr.Register();
+            
+            // AddCommandModule<Demo_OneModuleSystem>(LSCommandModuleDef.Demo_One);
         }
         public void Update()
         {
@@ -106,14 +109,14 @@ namespace LockStep
             }
             return true;
         }
-        public void UpdateCommand(LSCommand command,int frame)
+        public void UpdateCommand(LockStepInput command,int frame)
         {
-            if(!TryGetCommandModule(command.ModuleId, out LockStepSystem lsUpdateSystem))
+            if(!TryGetCommandModule(command.moduleId, out LockStepSystem lsUpdateSystem))
             {
                 Debug.LogError($"LockStepCommandSingleton:UpdateCommand failed!");
                 return;
             }
-            lsUpdateSystem.Run(command.CommandId,frame);
+            lsUpdateSystem.Run(command.commandId,frame);
         }
 
         // public void AddFrameInput(LSCommand command)

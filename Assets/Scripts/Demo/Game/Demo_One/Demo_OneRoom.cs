@@ -132,7 +132,7 @@ namespace Demo
         private void RefreshReplaySpeed()
         {
             float newInterval = LockStepConstValue.k_UpdateInterval / m_ReplaySpeed;
-            lockStepSystem.fixedFrameTimeCounter.ChangeInterval((int)newInterval, lockStepSystem.frame);
+            lockStepSystem.fixedFrameTimeCounter.ChangeInterval((int)newInterval, lockStepSystem.authorityFrame);
             TxtReplaySpeed.text = "Speed:" + m_ReplaySpeed;
         }
 
@@ -150,8 +150,8 @@ namespace Demo
 
         private void AddInputCommand(Demo_OneCommandDef demoOneCommandDef)
         {
-            LSCommand lsCommand = new LSCommand(m_commandModuleDef, (int)demoOneCommandDef);
-            lockStepSystem.AddFrameInput(lsCommand);      
+            LockStepInput lockStepInput = new LockStepInput(m_commandModuleDef, (int)demoOneCommandDef);
+            // lockStepSystem.AddFrameInput(lockStepInput);      
         }
         
     }

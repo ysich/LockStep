@@ -70,10 +70,5 @@ namespace LockStep
                 FrameInputs.AddRange(oneFrameInputsList);
             }
         }
-    
-        public void JumpToFrame()
-        {
-           
-        }
     }
 }

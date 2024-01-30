@@ -11,20 +11,9 @@ namespace LockStep
 {
     public class LockStepUpdater
     {
-        private List<LSCommand> m_UpdateCommands = new List<LSCommand>();
-        // private List<LSCommand> m_NewUpdateCommands = new List<LSCommand>();
-        
+        private List<LockStepInput> m_UpdateCommands = new List<LockStepInput>();
         public void LSUpdate(int frame)
         {
-            // if (m_NewUpdateCommands.Count > 0)
-            // {
-            //     foreach (var newUpdateCommand in m_NewUpdateCommands)
-            //     {
-            //         m_UpdateCommands.Add(newUpdateCommand);
-            //     }
-            //     m_NewUpdateCommands.Clear();
-            // }
-
             if (m_UpdateCommands.Count > 0)
             {
                 foreach (var updateCommand in m_UpdateCommands)
@@ -33,16 +22,11 @@ namespace LockStep
                 }
                 m_UpdateCommands.Clear();
             }
-            // for (int i = 0; i < updateCommands.Count; i++)
-            // {
-            //     LSCommand command = updateCommands[i];
-            //     LockStepModuleSingletom.instance.UpdateCommand(command);
-            // }
         }
 
         public void Add(OneFrameInputs oneFrameInputs)
         {
-            foreach (var lsCommand in oneFrameInputs.commandQueue)
+            foreach (var lsCommand in oneFrameInputs.inputQueue)
             {
                 m_UpdateCommands.Add(lsCommand);    
             }

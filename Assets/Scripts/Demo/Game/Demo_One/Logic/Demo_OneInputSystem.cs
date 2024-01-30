@@ -1,13 +1,18 @@
 ﻿/*---------------------------------------------------------------------------------------
 -- 负责人: onemt
--- 创建时间: 2024-01-18 10:05:03
+-- 创建时间: 2024-01-29 17:57:27
 -- 概述:
 ---------------------------------------------------------------------------------------*/
 
-namespace LockStep
+using LockStep;
+
+namespace Demo
 {
-    public class LogicData
+    public class Demo_OneInputSystem:LockStepInputSystem
     {
-        
+        public override void Update()
+        {
+            
+        }
     }
 }
