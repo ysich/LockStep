@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryPack", "MemoryPack.csproj", "{09bcbf40-7878-2f02-29d4-75c106ab6cb9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{fd9662b3-65d6-e15a-a7e1-caacd43de0f4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,8 @@ Global
 		{98ff678a-7cea-150a-09ca-c88d485c82be}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09bcbf40-7878-2f02-29d4-75c106ab6cb9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09bcbf40-7878-2f02-29d4-75c106ab6cb9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{fd9662b3-65d6-e15a-a7e1-caacd43de0f4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{fd9662b3-65d6-e15a-a7e1-caacd43de0f4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
