@@ -29,7 +29,7 @@ namespace Core
             handlers.Add(handler);
         }
 
-        public void UnregisterEvent(EventBusSingletonDefine key, Delegate handler)
+        public void UnregisterEvent<TArgs>(EventBusSingletonDefine key, Action<TArgs> handler)
         {
             if (events.TryGetValue(key, out var handlers))
             {

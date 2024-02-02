@@ -1,15 +1,16 @@
 ﻿/*---------------------------------------------------------------------------------------
 -- 负责人: onemt
--- 创建时间: 2024-01-25 17:13:31
+-- 创建时间: 2024-01-31 17:55:15
 -- 概述:
 ---------------------------------------------------------------------------------------*/
 
-namespace Core
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace Demo
 {
-    public enum EventBusSingletonDefine
+    public class Demo_OneGameData:ILogicData
     {
-        FrameTick,
-        //————View
-        Demo_One_Move,
+        public Vector3 postion { get; set; } = Vector3.zero;
     }
 }

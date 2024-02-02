@@ -1,15 +1,13 @@
 ﻿/*---------------------------------------------------------------------------------------
 -- 负责人: onemt
--- 创建时间: 2024-01-25 17:13:31
+-- 创建时间: 2024-02-02 16:17:51
 -- 概述:
 ---------------------------------------------------------------------------------------*/
 
-namespace Core
+namespace LockStep
 {
-    public enum EventBusSingletonDefine
+    public class StandAloneLSSystem
     {
-        FrameTick,
-        //————View
-        Demo_One_Move,
+        
     }
 }
