@@ -8,10 +8,10 @@ namespace LockStep
 {
     public abstract class LockStepLogicUpdateSystem:LockStepUpdateSystemBase
     {
-        /// <summary>
-        /// 收集一帧内的输入
-        /// </summary>
-        public LockStepInput input;
+        // /// <summary>
+        // /// 收集一帧内的输入
+        // /// </summary>
+        // public LockStepInput input;
         public LockStepLogicUpdateSystem(LockStepSystem lockStepSystem) : base(lockStepSystem)
         {
         }

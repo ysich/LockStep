@@ -31,7 +31,7 @@ namespace LockStep
                     return;
                 }
                 //逻辑执行到之前先收集操作指令
-                m_system.lockStepInputOperationSystem.Update();
+                m_system.runningLogicSystem.Update();
                 
                 ++m_system.predictionFrame;
                 OneFrameInputs oneFrameInputs = GetOneFrameInputs(m_system.predictionFrame);
@@ -50,9 +50,9 @@ namespace LockStep
                 return oneFrameInputs;
             }
             //predictionFrame
+            m_system.kFrameBuffer.MoveForward(m_system.predictionFrame);
             OneFrameInputs predictionFrameInputs = m_system.kFrameBuffer.GetFrameInputs(frame);
-            m_system.kFrameBuffer.MoveForward(m_system.authorityFrame);
-            predictionFrameInputs.Input = input;
+            predictionFrameInputs.Input = m_system.runningLogicSystem.inputOperationSystem.input;
             return predictionFrameInputs;
         }
     }

@@ -5,20 +5,22 @@
 ---------------------------------------------------------------------------------------*/
 
 using Core;
+using Demo;
 using LockStep;
 using LockStep.Define;
 using UnityEngine;
 
-namespace Demo
+namespace LockStep
 {
-    public class Demo_OneModuleSystem:LockStepSystem
+    public class DemoOneModuleSystem:LSLogicSystemBase
     {
-        public Demo_OneModuleSystem()
+        public override void Awake(LockStepSystem lockStepSystem)
         {
-            
+            base.Awake(lockStepSystem);
+            inputOperationSystem = new DemoOneModuleInputSystem();
         }
 
-        public override void Run(OneFrameInputs oneFrameInputs,int frame)
+        public override void Run(OneFrameInputs oneFrameInputs)
         {
             Demo_OneGameData data = GameDatas.instance.GetData<Demo_OneGameData>();
             LockStepInput input = oneFrameInputs.Input;
@@ -26,24 +28,28 @@ namespace Demo
             switch (commandDef)
             {
                 case Demo_OneCommandDef.Skill_1:
-                    Debug.Log($"Frame:{frame},Demo_One:Skill_1");
+                    // Debug.Log($"Frame:{frame},Demo_One:Skill_1");
+                    Debug.Log($"Frame:Demo_One:Skill_1");
                     break;
                 case Demo_OneCommandDef.Skill_2:
-                    Debug.Log($"Frame:{frame},Demo_One:Skill_2");
+                    // Debug.Log($"Frame:{frame},Demo_One:Skill_2");
+                    Debug.Log($"Frame:Demo_One:Skill_2");
                     break;
                 case Demo_OneCommandDef.Skill_3:
-                    Debug.Log($"Frame:{frame},Demo_One:Skill_3");
+                    // Debug.Log($"Frame:{frame},Demo_One:Skill_3");
+                    Debug.Log($"Frame:Demo_One:Skill_3");
                     break;
                 case Demo_OneCommandDef.Skill_4:
-                    Debug.Log($"Frame:{frame},Demo_One:Skill_4");
+                    // Debug.Log($"Frame:{frame},Demo_One:Skill_4");
+                    Debug.Log($"Frame:Demo_One:Skill_4");
                     break;
                 case Demo_OneCommandDef.Move:
-                    Debug.Log($"Frame:{frame},Demo_One:Move,v:{input.vector2}");
+                    // Debug.Log($"Frame:{frame},Demo_One:Move,v:{input.vector2}");
+                    Debug.Log($"Frame:Demo_One:Move,v:{input.vector2}");
                     data.postion += input.vector2.ToVector();
                     EventBusSingleton.instance.Publish(EventBusSingletonDefine.Demo_One_Move,input.vector2);
                     break;
             }
         }
-        
     }
 }

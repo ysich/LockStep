@@ -4,15 +4,16 @@
 -- 概述: 帧同步逻辑层，可以拥有多个逻辑层，每个逻辑层之间不会互相影响。
 ---------------------------------------------------------------------------------------*/
 
+using System;
 using Core;
 using LockStep.Define;
 using MemoryPack;
-using Unity.VisualScripting;
 using UnityEngine;
+using Core;
 
 namespace LockStep
 {
-    public abstract partial class LockStepSystem
+    public partial class LockStepSystem:ILockStepAwake
     {
         private readonly LockStepUpdater k_lockStepUpdater = new LockStepUpdater();
         
@@ -22,8 +23,21 @@ namespace LockStep
 
         public LockStepLogicUpdateSystem logicUpdateSystem ;
         public LockStepReplayUpdateSystem replayUpdateSystem;
+        
+        private LSLogicSystemBase m_runningLogicSystem;
 
-        public LockStepInputOperationSystem lockStepInputOperationSystem;
+        public LSLogicSystemBase runningLogicSystem
+        {
+            private set { m_runningLogicSystem = value; }
+            get
+            {
+                if (m_runningLogicSystem == null)
+                {
+                    Debug.LogError("LockStepSystem:没有正在运行的逻辑类！！检查逻辑！！");
+                }
+                return m_runningLogicSystem;
+            }
+        }
 
         /// <summary>
         /// 开始时间
@@ -51,14 +65,13 @@ namespace LockStep
         
         public readonly LockStepReplay kLockStepReplay = new LockStepReplay();
 
-        public LockStepSystem()
+        public void Awake()
         {
-            // logicUpdateSystem = new LockStepLogicUpdateSystem(this);
             replayUpdateSystem = new LockStepReplayUpdateSystem(this);
-            // lockStepInputOperationSystem = new LockStepInputOperationSystem(this);
+            InitModule();
         }
-        
-        public void StartTick(long startTime,int frame)
+
+        public void StartTick(long startTime,int frame,LSLogicSystemBase lsLogicSystem)
         {
             this.StopTick();
             
@@ -67,14 +80,16 @@ namespace LockStep
             this.predictionFrame = frame;
             fixedFrameTimeCounter.Init(startTime, frame,LockStepConstValue.k_UpdateInterval);
             kFrameBuffer.Init(frame);
-            
-            LockStepModuleSingletom.instance.RegisterUpdate(this);
+
+            runningLogicSystem = lsLogicSystem;
+            // LockStepModuleSingletom.instance.RegisterUpdate(this);
             Debug.Log($"开始帧同步！！！！startTime:{startTime},frame:{frame}");
         }
         
         public void StopTick()
         {
-            LockStepModuleSingletom.instance.UnRegisterUpdate(this);
+            runningLogicSystem = null;
+            // LockStepModuleSingletom.instance.UnRegisterUpdate(this);
             if (!IsReplay && IsSaveReplay)
             {
                 kLockStepReplay.SaveSnapshotsToFile();
@@ -84,17 +99,30 @@ namespace LockStep
 
         public void Update()
         {
-            if (IsReplay)
+            try
             {
-                replayUpdateSystem.Update();
+                if (IsReplay)
+                {
+                    replayUpdateSystem.Update();
+                }
+                else
+                {
+                    //这里没有正在跑的逻辑则直接退出
+                    if (m_runningLogicSystem == null)
+                    {
+                        return;
+                    }
+                    //这里如果调用InputSystem的Update频率和逻辑帧的频率会不同，会是Unity内Update的调用频率。导致一些操作收集会被覆盖。
+                    // //逻辑执行到之前先收集操作指令
+                    // lockStepInputOperationSystem.Update();
+                    logicUpdateSystem.Update();
+                }
             }
-            else
+            catch(Exception e)
             {
-                //这里如果调用InputSystem的Update频率和逻辑帧的频率会不同，会是Unity内Update的调用频率。导致一些操作收集会被覆盖。
-                // //逻辑执行到之前先收集操作指令
-                // lockStepInputOperationSystem.Update();
-                logicUpdateSystem.Update();
+                Debug.LogError(e);
             }
+            
         }
 
         private long lastTime = 0;
@@ -108,9 +136,9 @@ namespace LockStep
             Debug.Log($"逻辑帧执行:{authorityFrame},时间间隔{timeNow - lastTime}");
             lastTime = timeNow;
             
-            k_lockStepUpdater.Add(oneFrameInputs);
-            //TDOO:先用权威帧代替
-            k_lockStepUpdater.LSUpdate(authorityFrame);
+            runningLogicSystem.Run(oneFrameInputs);
+            // k_lockStepUpdater.oneFrameInputs = oneFrameInputs;
+            // k_lockStepUpdater.LSUpdate();
             if (!IsReplay)
             {
                 Record(authorityFrame);
@@ -134,22 +162,16 @@ namespace LockStep
             }
         }
 
-        public void Replay()
+        public void Replay(LSLogicSystemBase lsLogicSystemBase)
         {
-            StopTick();
             IsReplay = true;
             kLockStepReplay.DeSerializeSnapshots();
-            StartTick(TimeInfo.instance.ClientNow(),0);
+            StartTick(TimeInfo.instance.ClientNow(),0,lsLogicSystemBase);
         }
 
         public void JumpToReplayFrame(int frame)
         {
             Debug.Log($"跳到指定帧:{frame}");
-        }
-        
-        public void AddFrameInput(LockStepInput lockStepInput)
-        {
-            lockStepInputOperationSystem.inputs.Enqueue(lockStepInput);
         }
     }
 }

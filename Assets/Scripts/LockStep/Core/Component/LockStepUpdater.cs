@@ -13,8 +13,8 @@ namespace LockStep
     {
         // private List<LockStepInput> m_UpdateCommands = new List<LockStepInput>();
 
-        private OneFrameInputs m_OneFrameInputs;
-        public void LSUpdate(int frame)
+        public OneFrameInputs oneFrameInputs;
+        public void LSUpdate()
         {
             // if (m_UpdateCommands.Count > 0)
             // {
@@ -25,17 +25,17 @@ namespace LockStep
             //     m_UpdateCommands.Clear();
             // }
             
-            LockStepModuleSingletom.instance.UpdateCommand(m_OneFrameInputs,frame);
+            // LockStepModuleSingletom.instance.UpdateCommand(oneFrameInputs,frame);
         }
 
-        public void Add(OneFrameInputs oneFrameInputs)
-        {
-            // foreach (var lsCommand in oneFrameInputs.inputQueue)
-            // {
-            //     m_UpdateCommands.Add(lsCommand);    
-            // }
-            // m_UpdateCommands.Add(oneFrameInputs.Input);
-            m_OneFrameInputs = oneFrameInputs;
-        }
+        // public void Add(OneFrameInputs oneFrameInputs)
+        // {
+        //     // foreach (var lsCommand in oneFrameInputs.inputQueue)
+        //     // {
+        //     //     m_UpdateCommands.Add(lsCommand);    
+        //     // }
+        //     // m_UpdateCommands.Add(oneFrameInputs.Input);
+        //     m_OneFrameInputs = oneFrameInputs;
+        // }
     }
 }

@@ -53,10 +53,10 @@ namespace LockStep
                 SaveSnapshot();
             }
             byte[] snapshots = MemoryPackSerializer.Serialize(Snapshots);
-            Snapshots.Clear();
-            FrameInputs.Clear();
             FileHelper.SaveBytesToPath(LockStepConstValue.k_ReplaySavePath,snapshots);
             Debug.Log($"快照保存到本地目录：{LockStepConstValue.k_ReplaySavePath}!!");
+            Snapshots.Clear();
+            FrameInputs.Clear();
         }
 
         public void DeSerializeSnapshots()

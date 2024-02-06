@@ -8,9 +8,9 @@ namespace LockStep
 {
     public class NetworkLSSystem:LockStepSystem
     {
-        
-        public override void Run(OneFrameInputs oneFrameInputs, int frame)
+        public NetworkLSSystem():base()
         {
+            logicUpdateSystem = new NetworkLSLogicUpdateSystem(this);
         }
     }
 }

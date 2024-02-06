@@ -19,22 +19,18 @@ namespace LockStep
             while (true)
             {
                 //没到下一帧时间则不执行
-                if (TimeInfo.instance.ClientNow() < m_system.fixedFrameTimeCounter.FrameTime(m_system.predictionFrame + 1))
+                if (TimeInfo.instance.ClientNow() < m_system.fixedFrameTimeCounter.FrameTime(m_system.authorityFrame + 1))
                 {
                     break;
                 }
-                
-                // 最多只预测5帧
-                if (m_system.predictionFrame - m_system.authorityFrame > 5)
-                {
-                    return;
-                }
+
                 //逻辑执行到之前先收集操作指令
-                m_system.lockStepInputOperationSystem.Update();
+                m_system.runningLogicSystem.Update();
                 
                 ++m_system.authorityFrame;
+                m_system.kFrameBuffer.MoveForward(m_system.authorityFrame);
                 OneFrameInputs oneFrameInputs = m_system.kFrameBuffer.GetFrameInputs(m_system.authorityFrame);
-                oneFrameInputs.Input = input;
+                oneFrameInputs.Input = m_system.runningLogicSystem.inputOperationSystem.input;
                 m_system.LSUpdate(oneFrameInputs);
             }
         }

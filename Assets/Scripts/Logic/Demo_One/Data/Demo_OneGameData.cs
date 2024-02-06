@@ -12,5 +12,10 @@ namespace Demo
     public class Demo_OneGameData:ILogicData
     {
         public Vector3 postion { get; set; } = Vector3.zero;
+
+        public void Clear()
+        {
+            postion = Vector3.zero;
+        }
     }
 }

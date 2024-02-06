@@ -39,10 +39,13 @@ namespace Demo
 
         private LockStepCommandModuleDef m_commandModuleDef = LockStepCommandModuleDef.Demo_One;
 
-        private LockStepSystem lockStepSystem;
+        private DemoOneModuleSystem m_ModuleSystem;
+        private StandAloneLSSystem m_StandAloneLsSystem;
         
         private void Awake()
         {
+            
+            
             BtnRecord = transform.Find("Replay/BtnRecord").GetComponent<Button>();
             TxtBtnRecord = BtnRecord.GetComponentInChildren<TextMeshProUGUI>();
             BtnReplay = transform.Find("Replay/BtnReplay").GetComponent<Button>();
@@ -71,7 +74,10 @@ namespace Demo
             BtnSkill_3.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_3));
             BtnSkill_4.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_4));
 
-            LockStepModuleSingletom.instance.TryGetCommandModule(LockStepCommandModuleDef.Demo_One, out lockStepSystem);
+            m_StandAloneLsSystem = LockStepModuleSingletom.instance.GetModule<StandAloneLSSystem>();
+            m_ModuleSystem = m_StandAloneLsSystem.GetModule<DemoOneModuleSystem>();
+
+            // LockStepModuleSingletom.instance.TryGetCommandModule(LockStepCommandModuleDef.Demo_One, out lockStepSystem);
             RefreshBtnRecord();
             EventBusSingleton.instance.RegisterEvent<int>(EventBusSingletonDefine.FrameTick,RefreshFrameProgress);
         }
@@ -79,31 +85,33 @@ namespace Demo
         public void OnBtnStartGame()
         {
             Debug.Log("StartGame");
-            lockStepSystem.StartTick(TimeInfo.instance.ClientNow(),0);
             StartGame();
+            m_ModuleSystem.StartTick(TimeInfo.instance.ClientNow(),0);
         }
 
         public void OnBtnStopGame()
         {
             Debug.Log("StopGame");
-            lockStepSystem.StopTick();
+            m_ModuleSystem.StopTick();
         }
 
         #region Replay
 
         private void OnBtnRecord()
         {
-            lockStepSystem.IsSaveReplay = !lockStepSystem.IsSaveReplay;
+            m_StandAloneLsSystem.IsSaveReplay = !m_StandAloneLsSystem.IsSaveReplay;
             RefreshBtnRecord();
         }
 
         private void OnBtnReplay()
         {
-            lockStepSystem.Replay();
-            ReplayProgress.minValue = 0;
-            ReplayProgress.maxValue = lockStepSystem.kLockStepReplay.FrameInputs.Count;
-            ReplayProgress.value = 0;
             StartGame();
+            m_ModuleSystem.Replay();
+            ReplayProgress.minValue = 0;
+            ReplayProgress.maxValue = m_StandAloneLsSystem.kLockStepReplay.FrameInputs.Count;
+            ReplayProgress.value = 0;
+            RefreshReplaySpeed();
+            GameDatas.instance.GetData<Demo_OneGameData>().Clear();
         }
 
         /// <summary>
@@ -130,18 +138,18 @@ namespace Demo
         private void OnReplayProgressValueChange(float value)
         {
             int targetFrame = (int)value;
-            lockStepSystem.JumpToReplayFrame(targetFrame);
+            m_StandAloneLsSystem.JumpToReplayFrame(targetFrame);
         }
 
         private void RefreshReplaySpeed()
         {
-            lockStepSystem.replayUpdateSystem.ChangeReplaySpeed(m_ReplaySpeed);
+            m_StandAloneLsSystem.replayUpdateSystem.ChangeReplaySpeed(m_ReplaySpeed);
             TxtReplaySpeed.text = "Speed:" + m_ReplaySpeed;
         }
 
         private void RefreshBtnRecord()
         {
-            TxtBtnRecord.text = lockStepSystem.IsSaveReplay ? "StopRecord" : "StartRecord";
+            TxtBtnRecord.text = m_StandAloneLsSystem.IsSaveReplay ? "StopRecord" : "StartRecord";
         }
 
         private void RefreshFrameProgress(int frame)
@@ -155,12 +163,13 @@ namespace Demo
 
         public void StartGame()
         {
-            if (m_Cube)
+            if (m_Cube!=null)  
             {
-                Destroy(m_Cube);
+                GameObject.Destroy(m_Cube);
                 m_Cube = null;
             }
             m_Cube = Instantiate(instantiateCube);
+            GameDatas.instance.GetData<Demo_OneGameData>().Clear();
         }
 
         #endregion
@@ -168,7 +177,7 @@ namespace Demo
         private void AddInputCommand(Demo_OneCommandDef demoOneCommandDef)
         {
             LockStepInput lockStepInput = new LockStepInput(m_commandModuleDef, (int)demoOneCommandDef);
-            lockStepSystem.AddFrameInput(lockStepInput);
+            m_ModuleSystem.AddFrameInput(lockStepInput);
         }
         
     }
