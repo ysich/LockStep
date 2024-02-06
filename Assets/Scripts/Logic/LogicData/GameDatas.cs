@@ -17,7 +17,7 @@ namespace Demo
         {
             m_LogicDatas = new Dictionary<Type, ILogicData>();
 
-            AddData<Demo_OneGameData>();
+            AddData<StandAloneDemoData>();
         }
 
         public T AddData<T>()where T:ILogicData,new()

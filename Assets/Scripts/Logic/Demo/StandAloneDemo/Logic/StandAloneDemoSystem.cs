@@ -12,17 +12,17 @@ using UnityEngine;
 
 namespace LockStep
 {
-    public class DemoOneModuleSystem:LSLogicSystemBase
+    public class StandAloneDemoSystem:LSLogicSystemBase
     {
         public override void Awake(LockStepSystem lockStepSystem)
         {
             base.Awake(lockStepSystem);
-            inputOperationSystem = new DemoOneModuleInputSystem();
+            inputOperationSystem = new StandAloneDemoInputSystem();
         }
 
         public override void Run(OneFrameInputs oneFrameInputs)
         {
-            Demo_OneGameData data = GameDatas.instance.GetData<Demo_OneGameData>();
+            StandAloneDemoData data = GameDatas.instance.GetData<StandAloneDemoData>();
             LockStepInput input = oneFrameInputs.Input;
             Demo_OneCommandDef commandDef = (Demo_OneCommandDef)input.commandId;
             switch (commandDef)

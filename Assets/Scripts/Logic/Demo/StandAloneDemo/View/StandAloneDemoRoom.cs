@@ -15,7 +15,7 @@ using UnityEngine.UI;
 
 namespace Demo
 {
-    public class Demo_OneRoom:MonoBehaviour
+    public class StandAloneDemoRoom:MonoBehaviour
     {
         private Button BtnRecord;
         private TextMeshProUGUI TxtBtnRecord;
@@ -39,7 +39,7 @@ namespace Demo
 
         private LockStepCommandModuleDef m_commandModuleDef = LockStepCommandModuleDef.Demo_One;
 
-        private DemoOneModuleSystem m_ModuleSystem;
+        private StandAloneDemoSystem m_ModuleSystem;
         private StandAloneLSSystem m_StandAloneLsSystem;
         
         private void Awake()
@@ -75,7 +75,7 @@ namespace Demo
             BtnSkill_4.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_4));
 
             m_StandAloneLsSystem = LockStepModuleSingletom.instance.GetModule<StandAloneLSSystem>();
-            m_ModuleSystem = m_StandAloneLsSystem.GetModule<DemoOneModuleSystem>();
+            m_ModuleSystem = m_StandAloneLsSystem.GetModule<StandAloneDemoSystem>();
 
             // LockStepModuleSingletom.instance.TryGetCommandModule(LockStepCommandModuleDef.Demo_One, out lockStepSystem);
             RefreshBtnRecord();
@@ -111,7 +111,7 @@ namespace Demo
             ReplayProgress.maxValue = m_StandAloneLsSystem.kLockStepReplay.FrameInputs.Count;
             ReplayProgress.value = 0;
             RefreshReplaySpeed();
-            GameDatas.instance.GetData<Demo_OneGameData>().Clear();
+            GameDatas.instance.GetData<StandAloneDemoData>().Clear();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Demo
                 m_Cube = null;
             }
             m_Cube = Instantiate(instantiateCube);
-            GameDatas.instance.GetData<Demo_OneGameData>().Clear();
+            GameDatas.instance.GetData<StandAloneDemoData>().Clear();
         }
 
         #endregion

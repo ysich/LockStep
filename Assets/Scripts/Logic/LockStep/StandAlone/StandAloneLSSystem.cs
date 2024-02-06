@@ -16,7 +16,7 @@ namespace LockStep
         protected override void InitModule()
         {
             base.InitModule();
-            AddModule<DemoOneModuleSystem>();
+            AddModule<StandAloneDemoSystem>();
         }
     }
 }

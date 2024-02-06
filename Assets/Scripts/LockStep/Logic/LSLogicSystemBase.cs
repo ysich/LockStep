@@ -22,14 +22,7 @@ namespace LockStep
         //TODO:这里这么桥接有点奇怪，对父级依赖比较深，考虑后续改为注册形式
         public void StartTick(long startTime,int frame)
         {
-            try
-            {
-                m_LockStepSystem.StartTick(startTime,frame,this);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            m_LockStepSystem.StartTick(startTime,frame,this);
         }
 
         //TODO:这里这么桥接有点奇怪，对父级依赖比较深，考虑后续改为注册形式
@@ -37,7 +30,7 @@ namespace LockStep
         {
             m_LockStepSystem.StopTick();
         }
-
+        //TODO:这里这么桥接有点奇怪，对父级依赖比较深，考虑后续改为注册形式
         public void Replay()
         {
             m_LockStepSystem.Replay(this);

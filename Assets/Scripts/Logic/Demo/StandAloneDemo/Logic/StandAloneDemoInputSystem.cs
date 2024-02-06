@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace LockStep
 {
-    public class DemoOneModuleInputSystem:LSInputOperationSystemBase
+    public class StandAloneDemoInputSystem:LSInputOperationSystemBase
     {
         protected override void OnUpdate()
         {

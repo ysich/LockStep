@@ -48,7 +48,7 @@ namespace LockStep
             }
             else
             {
-                ReplaySpeed *= 2;
+                ReplaySpeed = replaySpeed;
             }
             int updateInterval = (int)(LockStepConstValue.k_UpdateInterval / ReplaySpeed);
             m_system.fixedFrameTimeCounter.ChangeInterval(updateInterval,m_system.authorityFrame);

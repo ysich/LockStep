@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace Demo
 {
-    public class Demo_OneGameData:ILogicData
+    public class StandAloneDemoData:ILogicData
     {
         public Vector3 postion { get; set; } = Vector3.zero;
 

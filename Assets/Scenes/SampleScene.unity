@@ -304,7 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3578438207da4a4789a7c8af1ef97a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Demo_One: {fileID: 1968715126602509248, guid: ea1c5f49efd85564ebb8077fd263f871, type: 3}
+  demoType: 0
+  StandAloneDemo: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

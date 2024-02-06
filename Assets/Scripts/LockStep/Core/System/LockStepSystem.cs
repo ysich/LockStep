@@ -98,31 +98,23 @@ namespace LockStep
         }
 
         public void Update()
-        {
-            try
+        {                    
+            //这里没有正在跑的逻辑则直接退出
+            if (m_runningLogicSystem == null)
             {
-                if (IsReplay)
-                {
-                    replayUpdateSystem.Update();
-                }
-                else
-                {
-                    //这里没有正在跑的逻辑则直接退出
-                    if (m_runningLogicSystem == null)
-                    {
-                        return;
-                    }
-                    //这里如果调用InputSystem的Update频率和逻辑帧的频率会不同，会是Unity内Update的调用频率。导致一些操作收集会被覆盖。
-                    // //逻辑执行到之前先收集操作指令
-                    // lockStepInputOperationSystem.Update();
-                    logicUpdateSystem.Update();
-                }
+                return;
             }
-            catch(Exception e)
+            if (IsReplay)
             {
-                Debug.LogError(e);
+                replayUpdateSystem.Update();
             }
-            
+            else
+            {
+                //这里如果调用InputSystem的Update频率和逻辑帧的频率会不同，会是Unity内Update的调用频率。导致一些操作收集会被覆盖。
+                // //逻辑执行到之前先收集操作指令
+                // lockStepInputOperationSystem.Update();
+                logicUpdateSystem.Update();
+            }
         }
 
         private long lastTime = 0;
