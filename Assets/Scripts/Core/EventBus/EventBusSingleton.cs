@@ -28,6 +28,29 @@ namespace Core
 
             handlers.Add(handler);
         }
+        
+        public void RegisterEvent<TArgs,TArgs1>(EventBusSingletonDefine key, Action<TArgs,TArgs1> handler)
+        {
+            if (!events.TryGetValue(key, out var handlers))
+            {
+                handlers = new HashSet<Delegate>();
+                events.Add(key, handlers);
+            }
+
+            handlers.Add(handler);
+        }
+        
+        public void RegisterEvent<TArgs,TArgs1,TArgs2>(EventBusSingletonDefine key, Action<TArgs,TArgs1,TArgs2> handler)
+        {
+            if (!events.TryGetValue(key, out var handlers))
+            {
+                handlers = new HashSet<Delegate>();
+                events.Add(key, handlers);
+            }
+
+            handlers.Add(handler);
+        }
+
 
         public void UnregisterEvent<TArgs>(EventBusSingletonDefine key, Action<TArgs> handler)
         {
@@ -54,6 +77,38 @@ namespace Core
                     if (potentialHandler is Action<TArgs> handler)
                     {
                         handler.Invoke(args);
+                    }
+                }
+            }
+        }
+        
+        public void Publish<TArgs,TArgs1>(EventBusSingletonDefine key, TArgs args,TArgs1 args1)
+        {
+            HashSet<Action<TArgs,TArgs1>> handlers = null;
+            
+            if (events.TryGetValue(key, out var potentialHandlers))
+            {
+                foreach (var potentialHandler in potentialHandlers)
+                {
+                    if (potentialHandler is Action<TArgs,TArgs1> handler)
+                    {
+                        handler.Invoke(args,args1);
+                    }
+                }
+            }
+        }
+        
+        public void Publish<TArgs,TArgs1,TArgs2>(EventBusSingletonDefine key, TArgs args,TArgs1 args1,TArgs2 args2)
+        {
+            HashSet<Action<TArgs,TArgs1,TArgs2>> handlers = null;
+            
+            if (events.TryGetValue(key, out var potentialHandlers))
+            {
+                foreach (var potentialHandler in potentialHandlers)
+                {
+                    if (potentialHandler is Action<TArgs,TArgs1,TArgs2> handler)
+                    {
+                        handler.Invoke(args,args1,args2);
                     }
                 }
             }

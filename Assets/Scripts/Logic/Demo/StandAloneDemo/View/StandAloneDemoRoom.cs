@@ -37,7 +37,7 @@ namespace Demo
         public GameObject instantiateCube;
         private GameObject m_Cube;
 
-        private LockStepCommandModuleDef m_commandModuleDef = LockStepCommandModuleDef.Demo_One;
+        private LockStepCommandModuleDef m_commandModuleDef = LockStepCommandModuleDef.StandAlone;
 
         private StandAloneDemoSystem m_ModuleSystem;
         private StandAloneLSSystem m_StandAloneLsSystem;
@@ -69,10 +69,10 @@ namespace Demo
             BtnSkill_4 = transform.Find("BtnSkill_4").GetComponent<Button>();
             BtnStartGame.onClick.AddListener(OnBtnStartGame);
             BtnStopGame.onClick.AddListener(OnBtnStopGame);
-            BtnSkill_1.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_1));
-            BtnSkill_2.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_2));
-            BtnSkill_3.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_3));
-            BtnSkill_4.onClick.AddListener(()=>AddInputCommand(Demo_OneCommandDef.Skill_4));
+            BtnSkill_1.onClick.AddListener(()=>AddInputCommand(StandAloneCommandDef.Skill_1));
+            BtnSkill_2.onClick.AddListener(()=>AddInputCommand(StandAloneCommandDef.Skill_2));
+            BtnSkill_3.onClick.AddListener(()=>AddInputCommand(StandAloneCommandDef.Skill_3));
+            BtnSkill_4.onClick.AddListener(()=>AddInputCommand(StandAloneCommandDef.Skill_4));
 
             m_StandAloneLsSystem = LockStepModuleSingletom.instance.GetModule<StandAloneLSSystem>();
             m_ModuleSystem = m_StandAloneLsSystem.GetModule<StandAloneDemoSystem>();
@@ -174,9 +174,9 @@ namespace Demo
 
         #endregion
 
-        private void AddInputCommand(Demo_OneCommandDef demoOneCommandDef)
+        private void AddInputCommand(StandAloneCommandDef standAloneCommandDef)
         {
-            LockStepInput lockStepInput = new LockStepInput(m_commandModuleDef, (int)demoOneCommandDef);
+            LockStepInput lockStepInput = new LockStepInput(m_commandModuleDef, (int)standAloneCommandDef);
             m_ModuleSystem.AddFrameInput(lockStepInput);
         }
         

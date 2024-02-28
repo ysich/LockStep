@@ -18,6 +18,7 @@ namespace Demo
             m_LogicDatas = new Dictionary<Type, ILogicData>();
 
             AddData<StandAloneDemoData>();
+            AddData<NetworkDemoData>();
         }
 
         public T AddData<T>()where T:ILogicData,new()

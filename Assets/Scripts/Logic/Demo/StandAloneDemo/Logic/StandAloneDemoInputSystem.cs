@@ -15,34 +15,34 @@ namespace LockStep
         protected override void OnUpdate()
         {
             LockStepCommandModuleDef moduleDef = LockStepCommandModuleDef.None;
-            Demo_OneCommandDef commandDef = Demo_OneCommandDef.None;
+            StandAloneCommandDef commandDef = StandAloneCommandDef.None;
             TSVector2 v = new();
             if (Input.GetKey(KeyCode.W))
             {
                 v.y += 1;
-                moduleDef = LockStepCommandModuleDef.Demo_One;
-                commandDef = Demo_OneCommandDef.Move;
+                moduleDef = LockStepCommandModuleDef.StandAlone;
+                commandDef = StandAloneCommandDef.Move;
             }
             
             if (Input.GetKey(KeyCode.A))
             {
                 v.x -= 1;
-                moduleDef = LockStepCommandModuleDef.Demo_One;
-                commandDef = Demo_OneCommandDef.Move;
+                moduleDef = LockStepCommandModuleDef.StandAlone;
+                commandDef = StandAloneCommandDef.Move;
             }
             
             if (Input.GetKey(KeyCode.S))
             {
                 v.y -= 1;
-                moduleDef = LockStepCommandModuleDef.Demo_One;
-                commandDef = Demo_OneCommandDef.Move;
+                moduleDef = LockStepCommandModuleDef.StandAlone;
+                commandDef = StandAloneCommandDef.Move;
             }
             
             if (Input.GetKey(KeyCode.D))
             {
                 v.x += 1;
-                moduleDef = LockStepCommandModuleDef.Demo_One;
-                commandDef = Demo_OneCommandDef.Move;
+                moduleDef = LockStepCommandModuleDef.StandAlone;
+                commandDef = StandAloneCommandDef.Move;
             }
             LockStepInput lockStepInput = new LockStepInput(moduleDef,(int)commandDef,v);
             this.input = lockStepInput;

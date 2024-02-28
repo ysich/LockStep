@@ -24,26 +24,26 @@ namespace LockStep
         {
             StandAloneDemoData data = GameDatas.instance.GetData<StandAloneDemoData>();
             LockStepInput input = oneFrameInputs.Input;
-            Demo_OneCommandDef commandDef = (Demo_OneCommandDef)input.commandId;
+            StandAloneCommandDef commandDef = (StandAloneCommandDef)input.commandId;
             switch (commandDef)
             {
-                case Demo_OneCommandDef.Skill_1:
+                case StandAloneCommandDef.Skill_1:
                     // Debug.Log($"Frame:{frame},Demo_One:Skill_1");
                     Debug.Log($"Frame:Demo_One:Skill_1");
                     break;
-                case Demo_OneCommandDef.Skill_2:
+                case StandAloneCommandDef.Skill_2:
                     // Debug.Log($"Frame:{frame},Demo_One:Skill_2");
                     Debug.Log($"Frame:Demo_One:Skill_2");
                     break;
-                case Demo_OneCommandDef.Skill_3:
+                case StandAloneCommandDef.Skill_3:
                     // Debug.Log($"Frame:{frame},Demo_One:Skill_3");
                     Debug.Log($"Frame:Demo_One:Skill_3");
                     break;
-                case Demo_OneCommandDef.Skill_4:
+                case StandAloneCommandDef.Skill_4:
                     // Debug.Log($"Frame:{frame},Demo_One:Skill_4");
                     Debug.Log($"Frame:Demo_One:Skill_4");
                     break;
-                case Demo_OneCommandDef.Move:
+                case StandAloneCommandDef.Move:
                     // Debug.Log($"Frame:{frame},Demo_One:Move,v:{input.vector2}");
                     Debug.Log($"Frame:Demo_One:Move,v:{input.vector2}");
                     data.postion += input.vector2.ToVector();

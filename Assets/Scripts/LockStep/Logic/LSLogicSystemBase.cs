@@ -6,12 +6,13 @@
 
 using System;
 using Core;
+using Demo;
 
 namespace LockStep
 {
     public abstract class LSLogicSystemBase
     {
-        private LockStepSystem m_LockStepSystem;
+        protected LockStepSystem m_LockStepSystem;
         public LSInputOperationSystemBase inputOperationSystem;
         
         public virtual void Awake(LockStepSystem lockStepSystem)
@@ -41,7 +42,7 @@ namespace LockStep
             inputOperationSystem.waitInputs.Enqueue(lsStepInput);
         }
 
-        public void Update()
+        public void UpdateInputOperation()
         {
             inputOperationSystem.Update();
         }

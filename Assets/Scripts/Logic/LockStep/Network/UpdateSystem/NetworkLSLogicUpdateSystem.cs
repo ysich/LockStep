@@ -5,6 +5,7 @@
 ---------------------------------------------------------------------------------------*/
 
 using Core;
+using Demo;
 using UnityEngine;
 
 namespace LockStep
@@ -31,11 +32,13 @@ namespace LockStep
                     return;
                 }
                 //逻辑执行到之前先收集操作指令
-                m_system.runningLogicSystem.Update();
+                m_system.runningLogicSystem.UpdateInputOperation();
                 
                 ++m_system.predictionFrame;
                 OneFrameInputs oneFrameInputs = GetOneFrameInputs(m_system.predictionFrame);
                 m_system.LSUpdate(oneFrameInputs);
+                
+                NetworkSyncSystemSingleton.instance.Receive(m_system.predictionFrame,oneFrameInputs);
             }
         }
 
@@ -45,8 +48,6 @@ namespace LockStep
             if (frame <= m_system.authorityFrame)
             {
                 OneFrameInputs oneFrameInputs = m_system.kFrameBuffer.GetFrameInputs(frame);
-                // //TODO:这里先用直接输入的帧数据，因为还没有地方同步权威帧
-                // oneFrameInputs.Input = input;
                 return oneFrameInputs;
             }
             //predictionFrame

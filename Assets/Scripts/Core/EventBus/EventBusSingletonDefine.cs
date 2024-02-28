@@ -11,5 +11,8 @@ namespace Core
         FrameTick,
         //————View
         Demo_One_Move,
+        
+        Network_Sync,
+        Network_UpdateDelay,
     }
 }

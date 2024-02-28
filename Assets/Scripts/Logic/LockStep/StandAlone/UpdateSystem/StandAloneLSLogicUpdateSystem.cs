@@ -25,7 +25,7 @@ namespace LockStep
                 }
 
                 //逻辑执行到之前先收集操作指令
-                m_system.runningLogicSystem.Update();
+                m_system.runningLogicSystem.UpdateInputOperation();
                 
                 ++m_system.authorityFrame;
                 m_system.kFrameBuffer.MoveForward(m_system.authorityFrame);

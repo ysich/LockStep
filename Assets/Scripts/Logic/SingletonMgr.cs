@@ -22,6 +22,8 @@ namespace Demo
             //Game
             AddSingleton<GameDatas>();
             AddSingleton<LockStepModuleSingletom>();
+
+            AddSingleton<NetworkSyncSystemSingleton>();
         }
         public T AddSingleton<T>() where T:ASingleton,ISingletonAwake,new()
         {

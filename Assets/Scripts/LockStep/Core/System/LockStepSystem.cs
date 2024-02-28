@@ -15,7 +15,7 @@ namespace LockStep
 {
     public partial class LockStepSystem:ILockStepAwake
     {
-        private readonly LockStepUpdater k_lockStepUpdater = new LockStepUpdater();
+        // private readonly LockStepUpdater k_lockStepUpdater = new LockStepUpdater();
         
         public readonly FixedFrameTimeCounter fixedFrameTimeCounter = new FixedFrameTimeCounter();
 
@@ -125,7 +125,7 @@ namespace LockStep
         public void LSUpdate(OneFrameInputs oneFrameInputs)
         {
             long timeNow =  TimeInfo.instance.ClientNow();
-            Debug.Log($"逻辑帧执行:{authorityFrame},时间间隔{timeNow - lastTime}");
+            Debug.Log($"逻辑帧执行,权威帧:{authorityFrame},预测帧:{predictionFrame},时间间隔{timeNow - lastTime}");
             lastTime = timeNow;
             
             runningLogicSystem.Run(oneFrameInputs);

@@ -13,9 +13,9 @@ using UnityEditor.UI;
 
 namespace Demo
 {
-    public class MoveCube:MonoBehaviour
+    public class NetworkMoveCube:MonoBehaviour
     {
-        private StandAloneDemoData m_Data;
+        private NetworkDemoData m_Data;
 
         private float distance;
         private float speed = 2f;
@@ -23,7 +23,7 @@ namespace Demo
         private float t;
         private void Awake()
         {
-            m_Data = GameDatas.instance.GetData<StandAloneDemoData>();
+            m_Data = GameDatas.instance.GetData<NetworkDemoData>();
             EventBusSingleton.instance.RegisterEvent<TSVector2>(EventBusSingletonDefine.Demo_One_Move,Move);
         }
 
